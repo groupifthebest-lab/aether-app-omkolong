@@ -1,145 +1,147 @@
 import streamlit as st
 import time
-import datetime
+import random
 
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="AETHER Web",
+    page_title="AETHER CORE",
     page_icon="🌌",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
-# --- STYLE CSS (Tampilan Modern & Bersih) ---
+# --- CSS STYLING (BIAR SENADA SAMA WEB OM KOLONG) ---
 st.markdown("""
-<style>
+    <style>
     .stApp {
-        background-color: #0e1117;
-        color: #ffffff;
+        background-color: #0f0c29;
+        color: #e0f7fa;
     }
     h1, h2, h3 {
-        color: #00c6ff;
+        color: #00e6e6 !important;
+        text-shadow: 0 0 10px #00e6e6;
+        font-family: 'Courier New', monospace;
     }
-    .card {
-        padding: 20px;
+    .stButton>button {
+        background: linear-gradient(45deg, #00e6e6, #007bff);
+        color: white;
+        border: none;
         border-radius: 10px;
-        background-color: #1f2937;
-        border: 1px solid #374151;
-        margin-bottom: 15px;
+        box-shadow: 0 0 10px rgba(0,230,230,0.5);
+        transition: 0.3s;
     }
-    .highlight {
-        color: #4CAF50;
+    .stButton>button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(0,230,230,0.8);
+    }
+    .big-font {
+        font-size: 60px !important;
         font-weight: bold;
+        text-align: center;
+        color: #fff;
+        text-shadow: 0 0 20px #ff00ff;
     }
-</style>
+    .glass-box {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(0, 230, 230, 0.3);
+        margin-bottom: 20px;
+    }
+    </style>
 """, unsafe_allow_html=True)
 
-# --- NAVIGASI (SIDEBAR) ---
-with st.sidebar:
-    st.title("🌌 AETHER")
-    st.caption("Adaptive Neural Interface")
-    
-    menu = st.radio("Menu Utama", ["⚡ Smart Dashboard", "📝 Blog & Wawasan", "ℹ️ Tentang"])
-    
-    st.divider()
-    st.write("Setel Kondisi Anda:")
-    mood = st.select_slider("Bagaimana perasaan Anda saat ini?", 
-                            options=["Sangat Stres", "Lelah", "Netral", "Fokus", "Bersemangat"])
-    
-    st.divider()
-    st.caption("© 2025 AETHER Project")
+# --- HEADER ---
+st.markdown("<h1 style='text-align: center;'>🌌 AETHER CORE</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; opacity: 0.7;'>System Activated. Choose your module.</p>", unsafe_allow_html=True)
 
-# --- HALAMAN 1: SMART DASHBOARD (ALAT BANTU) ---
-if menu == "⚡ Smart Dashboard":
-    st.title(f"Halo, Mode: {mood}")
+# --- TAB NAVIGASI ---
+tab1, tab2, tab3 = st.tabs(["⏱️ Deep Focus", "🫁 Zen Breath", "🤖 Oracle AI"])
+
+# === FITUR 1: DEEP FOCUS (POMODORO) ===
+with tab1:
+    st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
+    st.subheader("Deep Focus Timer")
+    st.write("Atur waktu fokus lo biar produktif, Bro.")
     
-    # Logika Liquid UI: Tampilan berubah sesuai Mood
-    if mood == "Sangat Stres":
-        st.error("⚠️ Terdeteksi Beban Mental Tinggi")
-        st.markdown("""
-        <div class="card">
-            <h3>💊 Resep Digital: De-Stress</h3>
-            <p>Sistem mendeteksi Anda butuh ketenangan. Matikan notifikasi HP Anda sejenak.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.info("🌬️ Panduan Napas 4-7-8")
-            if st.button("Mulai Terapi Napas"):
-                with st.empty():
-                    for i in range(3):
-                        st.write("🛑 Tahan Napas...")
-                        time.sleep(2)
-                        st.write("💨 Hembuskan Perlahan...")
-                        time.sleep(2)
-                    st.success("Selesai. Ulangi jika perlu.")
-        with col2:
-            st.video("https://www.youtube.com/watch?v=lFcSrYw-ARY") # Musik relaksasi
+    col1, col2 = st.columns(2)
+    with col1:
+        minutes = st.number_input("Menit:", min_value=1, max_value=120, value=25)
+    with col2:
+        st.write("") # Spacer
+        st.write("")
+        start_focus = st.button("Mulai Fokus 🔥")
+
+    if start_focus:
+        with st.empty():
+            total_seconds = minutes * 60
+            while total_seconds > 0:
+                mins, secs = divmod(total_seconds, 60)
+                timer_display = '{:02d}:{:02d}'.format(mins, secs)
+                st.markdown(f"<p class='big-font'>{timer_display}</p>", unsafe_allow_html=True)
+                time.sleep(1)
+                total_seconds -= 1
+            st.markdown("<p class='big-font'>SELESAI! 🚀</p>", unsafe_allow_html=True)
+            st.balloons()
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# === FITUR 2: ZEN BREATHING ===
+with tab2:
+    st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
+    st.subheader("Zen Breathing")
+    st.write("Ikuti panduan ini kalau lo lagi stres atau panik.")
+    
+    if st.button("Mulai Terapi Napas 🌬️"):
+        progress_text = "Siap-siap..."
+        my_bar = st.progress(0, text=progress_text)
+        status_text = st.empty()
+
+        for cycle in range(3): # 3 Siklus
+            # Tarik Napas (4 detik)
+            status_text.markdown("## 🔼 TARIK NAPAS...")
+            for i in range(100):
+                time.sleep(0.04)
+                my_bar.progress(i + 1)
             
-    elif mood == "Fokus" or mood == "Bersemangat":
-        st.success("🚀 Mode Produktivitas Tinggi Aktif")
-        st.markdown("""
-        <div class="card">
-            <h3>🎯 Deep Work Station</h3>
-            <p>Manfaatkan energi ini untuk menyelesaikan tugas tersulit Anda.</p>
-        </div>
-        """, unsafe_allow_html=True)
+            # Tahan (4 detik)
+            status_text.markdown("## ⏸️ TAHAN...")
+            time.sleep(4)
+            
+            # Hembuskan (4 detik)
+            status_text.markdown("## 🔽 HEMBUSKAN...")
+            for i in range(100, 0, -1):
+                time.sleep(0.04)
+                my_bar.progress(i)
         
-        col1, col2 = st.columns([2,1])
-        with col1:
-            task = st.text_input("Apa 1 Tugas Utama hari ini?")
-            if task:
-                st.write(f"FOKUS SAJA PADA: **{task}**")
-                # Pomodoro Timer Sederhana
-                if st.button("Mulai Timer Fokus (25 Menit)"):
-                    bar = st.progress(0)
-                    for i in range(100):
-                        time.sleep(0.1) # Dipercepat untuk demo
-                        bar.progress(i + 1)
-                    st.balloons()
-                    st.write("Waktu istirahat!")
-        with col2:
-             st.write("🎶 **Rekomendasi Audio:** Binaural Beats (40Hz)")
-             st.markdown("[Buka Spotify Focus](https://open.spotify.com/playlist/37i9dQZF1DWZeKCadgRdKQ)")
+        status_text.markdown("## ✨ Rileks...")
+        st.success("Sesi selesai. Semoga lebih tenang!")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    else: # Netral / Lelah
-        st.warning("🔋 Mode Hemat Energi")
-        st.write("Lakukan hal-hal ringan. Rapikan meja, balas email pendek, atau baca artikel di Blog.")
+# === FITUR 3: AETHER ORACLE ===
+with tab3:
+    st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
+    st.subheader("Aether Oracle")
+    st.write("Tanya apa aja, AI akan kasih petunjuk random.")
+    
+    question = st.text_input("Ketik pertanyaan lo (Ya/Tidak):", placeholder="Misal: Apakah dia jodoh gw?")
+    
+    if st.button("Tanya Oracle 🔮") and question:
+        with st.spinner("Menghubungkan ke dimensi lain..."):
+            time.sleep(2) # Efek mikir
+            answers = [
+                "Pasti banget, Bro!", 
+                "Kayaknya nggak dulu deh.", 
+                "Coba tanya lagi besok.",
+                "Energinya positif, GAS!",
+                "Hati-hati, ada red flag.",
+                "Fokus karir dulu aja.",
+                "100% Valid!",
+                "Mending tidur aja."
+            ]
+            result = random.choice(answers)
+            st.markdown(f"<h2 style='text-align:center; color:#ff00ff;'>{result}</h2>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-# --- HALAMAN 2: BLOG (TEMPAT BERBAGI) ---
-elif menu == "📝 Blog & Wawasan":
-    st.title("Wawasan AETHER")
-    st.write("Artikel terpilih untuk meningkatkan kualitas hidup dan teknologi.")
-
-    # Artikel 1
-    with st.expander("🤖 Masa Depan AI adalah 'Teman', Bukan Alat", expanded=True):
-        st.markdown("""
-        **Ditulis oleh Admin** | 25 Des 2025
-        
-        Banyak orang takut AI akan menggantikan manusia. Padahal, masa depan yang ideal adalah *Simbiosis*.
-        AETHER dirancang bukan untuk menyuruh Anda, tapi untuk *memahami* kondisi emosi Anda sebelum Anda bekerja.
-        
-        Teknologi harusnya membuat kita lebih tenang, bukan lebih sibuk.
-        """)
-
-    # Artikel 2
-    with st.expander("💡 Cara Mengelola Stres Digital"):
-        st.write("""
-        1. Matikan notifikasi yang tidak perlu (Non-Human Notifications).
-        2. Gunakan mode 'Grayscale' pada layar HP.
-        3. Gunakan fitur 'Smart Dashboard' di aplikasi ini saat merasa cemas.
-        """)
-        
-    # Form Request Artikel
-    st.markdown("---")
-    st.write("**Punya ide topik?**")
-    st.text_input("Kirim saran topik artikel di sini:")
-    if st.button("Kirim Saran"):
-        st.success("Terima kasih! Saran Anda tersimpan di sistem.")
-
-# --- HALAMAN 3: TENTANG ---
-elif menu == "ℹ️ Tentang":
-    st.title("Tentang AETHER Project")
-    st.info("Aplikasi ini dibuat untuk membantu manusia menyeimbangkan Produktivitas dan Kesehatan Mental.")
-    st.write("Versi Web 1.0 - Dibuat dengan Python & Streamlit.")
+# --- FOOTER ---
+st.markdown("---")
+st.caption("Powered by Streamlit | Om Kolong Techno Engine V2.0")
